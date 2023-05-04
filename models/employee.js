@@ -1,5 +1,7 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('./sequelize');
+const Airport = require("./airport");
+
 const Employee = sequelize.define('employee', {
     SSN: {
         type: DataTypes.UUID,
@@ -46,7 +48,9 @@ const Employee = sequelize.define('employee', {
 });
 
 Employee.belongsTo(Employee, { foreignKey: 'sup_ssn' });
-Employee.belongsTo(require('./airport'));
-Employee.belongsToMany(require('./client'), { through: 'client_employee' });
+
+Airport.hasMany(Employee)
+Employee.belongsTo(Airport)
+
 
 module.exports = Employee

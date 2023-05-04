@@ -1,7 +1,7 @@
 // require mongoose
 const mongoose = require("mongoose")
 // set connection
-// go to the index.js file
+// go to the index.mjs file
 // create schema
 const innovationSchema = new mongoose.Schema({
     TotalTimeInvested: {

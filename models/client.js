@@ -1,6 +1,13 @@
 const Sequelize = require('sequelize');
 const sequelize = require('./sequelize');
 const {DataTypes} = require("sequelize");
+const ClientPassport = require("./client_passport");
+const ClientPhone = require('./client_phone')
+const BiometricsData = require('./biometric_data')
+const Ticket = require('./ticket')
+const Employee = require('./employee')
+const TicketCancel = require("./ticket_cancel");
+const Payment = require("./payment");
 
 const Client = sequelize.define('client', {
     id: {
@@ -45,6 +52,10 @@ const Client = sequelize.define('client', {
         type : Sequelize.STRING(45),
         allowNull : true
     },
+    birth:{
+        type : Sequelize.DATE,
+        allowNull : true
+    },
     gender:{
         type : Sequelize.STRING(45),
         allowNull : true
@@ -83,17 +94,39 @@ const Client = sequelize.define('client', {
         }
     }
 });
-// this client model is connected to another model biometric_data one to one
-Client.belongsTo(require('./biometric_data'));
-// this client model is connected to another model payment one to many
-Client.hasMany(require('./payment'));
-// this client model is connected to another model employee many to many
-Client.belongsToMany(require('./employee'), {through: 'client_employee'}
-    );
-// is connected to another model ticket one to many and have some attributes on relation are class extra kilo date_of_booking WBags source destination
-Client.hasMany(require('./ticket'), {foreignKey: 'id'});
-Client.hasMany(require('./ticket_cancel'))
-Client.hasMany(require('./client_passport'));
-Client.hasMany(require('./client_phone'));
+
+Client.hasMany(Payment);
+Payment.belongsTo(Client);
+Client.hasMany(TicketCancel, { foreignKey: 'client_id' })
+TicketCancel.belongsTo(Client, { foreignKey: 'client_id' });
+Payment.hasMany(TicketCancel, { foreignKey: 'payment_id' })
+TicketCancel.belongsTo(Payment, { foreignKey: 'payment_id' });
+
+Client.hasMany(Ticket);
+Ticket.belongsTo(Client);
+
+Client.hasMany(ClientPassport);
+ClientPassport.belongsTo(Client);
+
+Client.hasMany(ClientPhone);
+ClientPhone.belongsTo(Client);
+
+Client.hasMany(BiometricsData);
+BiometricsData.belongsTo(Client);
+
+Employee.belongsToMany(Client, { through: 'client_employee' });
+Client.belongsToMany(Employee, { through: 'client_employee' });
+
+(async () => {
+    try {
+        await sequelize.authenticate();
+        console.log('Connection has been established successfully.');
+
+        await sequelize.sync();
+        console.log('All models were synchronized successfully.');
+    } catch (error) {
+        console.error('Unable to connect to the database:', error);
+    }
+})();
 
 module.exports = Client

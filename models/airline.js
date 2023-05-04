@@ -1,11 +1,13 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('./sequelize');
+const Flight = require('./flight');
 
 const Airline = sequelize.define('airline', {
     AL_id: {
-        type: DataTypes.STRING(10),
-        allowNull: false,
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4, // Or DataTypes.UUIDV1
         primaryKey: true,
+        allowNull: false
     },
     AL_name: {
         type: DataTypes.STRING(20),
@@ -23,11 +25,8 @@ const Airline = sequelize.define('airline', {
     tableName: 'airline',
     timestamps: false,
 });
-Airline.hasMany(require('./airport'), {
-    through: 'airport_line',
-})
-Airline.hasMany(require('./flight'), {
-    foreignKey: 'AL_id',
-})
+
+Airline.hasMany(Flight)
+Flight.belongsTo(Airline)
 
 module.exports = Airline;

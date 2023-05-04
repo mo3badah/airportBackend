@@ -25,7 +25,6 @@ const Payment = sequelize.define('payment', {
     }
 },{timestamps: false});
 
-Payment.belongsTo(require('./client'));
-Payment.hasMany(require('./ticket_cancel'))
+
 
 module.exports = Payment

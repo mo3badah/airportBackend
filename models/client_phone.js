@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const sequelize = require('./sequelize');
 
-const ClientPhone = sequelize.define('client_phone', {
+const ClientPhone = sequelize.define('ClientPhone', {
     phone: {
         type: Sequelize.STRING(20),
         allowNull: false
@@ -10,6 +10,6 @@ const ClientPhone = sequelize.define('client_phone', {
     tableName: 'client_phone',
     timestamps: false,
 });
-ClientPhone.belongsTo(require('./client'))
+
 
 module.exports = ClientPhone;

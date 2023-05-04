@@ -4,14 +4,14 @@ const ajv = new Ajv()
 const schema = {
     "type": "object",
     "properties":{
-        "fn":{"type":"string", "pattern":"^[A-Za-z][a-z]*$"},
-        "ln":{"type":"string", "pattern":"^[A-Za-z][a-z]*$"},
+        "Fname":{"type":"string", "pattern":"^[A-Za-z][a-z]*$"},
+        "Lname":{"type":"string", "pattern":"^[A-Za-z][a-z]*$"},
         "email":{"type":"string", "pattern":".+@.+\..+"},
         "password":{"type":"string"},
-        "age": {"type": "number"},
-        "flag": {"type": "boolean"}
+        "country": {"type": "string"},
+        "phone": {"type": "number", "pattern":"^[0-9]{10}$"}
     },
-    "required":["fn","ln","email","password"]
+    "required":["Fname","Lname","email","password"]
 }
 const validator = ajv.compile(schema)
 module.exports = validator

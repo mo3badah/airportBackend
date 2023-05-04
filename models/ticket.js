@@ -1,5 +1,8 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('./sequelize');
+const Flight = require('./flight');
+const ClassDetails = require('./class_details');
+const Seats = require('./seats');
 
 const Ticket = sequelize.define('ticket', {
     ticket_number: {
@@ -24,10 +27,14 @@ const Ticket = sequelize.define('ticket', {
     }
 });
 
-Ticket.belongsTo(require('./client'), { foreignKey: 'id' });
-Ticket.belongsTo(require('./payment'), { foreignKey: 'payment_id' });
-Ticket.belongsTo(require('./flight'));
-Ticket.belongsTo(require('./seats'));
-Ticket.hasOne(require('./ticket_cancel'));
+Flight.hasMany(Ticket);
+Ticket.belongsTo(Flight);
+
+ClassDetails.hasMany(Ticket);
+Ticket.belongsTo(ClassDetails);
+
+Ticket.hasOne(Seats);
+Seats.belongsTo(Ticket);
+
 
 module.exports = Ticket

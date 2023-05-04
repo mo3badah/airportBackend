@@ -10,6 +10,7 @@ const ClientPassport = sequelize.define('client_passport', {
     tableName: 'client_passport',
     timestamps: false,
 });
-ClientPassport.belongsTo(require('./client'))
+
+
 
 module.exports = ClientPassport;

@@ -34,8 +34,5 @@ const Flight = sequelize.define('flight', {
     }
 });
 
-Flight.belongsTo(require('./airline'));
-Flight.hasMany(require('./ticket'));
-Flight.hasMany(require('./class_details'));
 
 module.exports = Flight

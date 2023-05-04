@@ -1,11 +1,14 @@
 const { Sequelize, DataTypes } = require('sequelize');
 const sequelize = require('./sequelize');
+const Seats = require('./seats');
+const Flight = require('./flight');
 
 const ClassDetails = sequelize.define('class_details', {
     class_details_id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4, // Or DataTypes.UUIDV1
         primaryKey: true,
+        allowNull: false
     },
     class: {
         type: DataTypes.STRING(10),
@@ -27,7 +30,11 @@ const ClassDetails = sequelize.define('class_details', {
     tableName: 'class_details',
     timestamps: false
 });
-ClassDetails.belongsTo(require('./flight'), {foreignKey: 'flight_no', targetKey: 'flight_no'});
-ClassDetails.hasMany(require('./seats'))
+
+ClassDetails.hasMany(Seats);
+Seats.belongsTo(ClassDetails);
+
+Flight.belongsToMany(ClassDetails, { through: 'flight_class_details' });
+ClassDetails.belongsToMany(Flight, { through: 'flight_class_details' });
 
 module.exports = ClassDetails;

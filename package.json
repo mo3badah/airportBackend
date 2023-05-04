@@ -20,13 +20,15 @@
     "helmet": "^6.0.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.6.0",
+    "mysql2": "^3.2.4",
     "sequelize": "^6.31.0",
     "validator": "^13.7.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.18.10",
-    "@babel/core": "^7.18.13",
-    "@babel/preset-env": "^7.18.10",
-    "prettier": "^2.7.1"
+    "@babel/cli": "^7.21.5",
+    "@babel/core": "^7.21.8",
+    "@babel/preset-env": "^7.21.5",
+    "nodemon": "^2.0.22",
+    "prettier": "^2.8.8"
   }
 }

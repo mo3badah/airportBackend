@@ -2,7 +2,7 @@
 const mongoose = require("mongoose")
 const isEmail = require("validator/lib/isEmail");
 const jwt = require("jsonwebtoken");
-// go to the index.js file
+// go to the index.mjs file
 // create schema
 const usersSchema = new mongoose.Schema({
     age: {

@@ -2,7 +2,7 @@
 import express, { json } from "express";
 import * as path from "path";
 // mongoose is the package that we need it to deal with mongodb database through nodejs
-const mongoose = require("mongoose")
+// const mongoose = require("mongoose")
 import * as fs from "fs";
 import {re} from "@babel/core/lib/vendor/import-meta-resolve";
 import cookieParser from "cookie-parser";
@@ -13,6 +13,7 @@ import helmet from "helmet";
 import innovationsRouter from "../routes/Innovations" // all the routed innovations add, update, delete, and fetching all the data of it
 import userRouter from "../routes/Users" // files needed to make new profile ( registration methods )
 import authRouter from "../routes/Auth"
+
 
 // firstly we start using our libraries which we needed and add them to our app
 const app = express(), // main application which will need for all the routing and database
@@ -25,19 +26,19 @@ app.use(express.json())
 app.use(cookieParser())
 app.use(helmet())
 // set the view engine to ejs
-app.set('view engine', 'ejs');
+// app.set('view engine', 'ejs');
 // we need to make our main routes here so if the auth is accepted we will go to these pages
 app.get(`/`,(req, res) => {
   // res.sendFile(path.join(__dirname,"../front/sign.js"))
-  res.sendFile(path.join(__dirname,"../front/signin.html"))
+  // res.sendFile(path.join(__dirname,"../front/signin.html"))
 })
 app.get(`/dashboard`,async (req, res) => {
-    let query ={}
-    query.fn = req.cookies["fn"]
-    query.ln = req.cookies["ln"]
-    query.admin = req.cookies["admin"]
-     let data =  await fetchData()
-    res.render('dashboard.ejs',{query: query, data: data});
+    // let query ={}
+    // query.fn = req.cookies["fn"]
+    // query.ln = req.cookies["ln"]
+    // query.admin = req.cookies["admin"]
+    //  let data =  await fetchData()
+    // res.render('dashboard.ejs',{query: query, data: data});
 })
 function fetchData(){
     return fetch("http://localhost:3000/api/innovations/")
@@ -194,13 +195,13 @@ function fetchItem(name){
 
 app.use(express.static("front"))
 
-// set mongoose connection
-mongoose.connect("mongodb://localhost:27017/innovation")
-    .then(()=> console.log("connected to DB"))
-    .catch((err)=>{
-      console.log(err)
-    })
-
+// // set mongoose connection
+// mongoose.connect("mongodb://localhost:27017/innovation")
+//     .then(()=> console.log("connected to DB"))
+//     .catch((err)=>{
+//       console.log(err)
+//     })
+//
 
 
 // use routers and tie all of these together

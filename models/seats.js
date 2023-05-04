@@ -2,19 +2,18 @@ const { DataTypes } = require('sequelize');
 const sequelize = require('./sequelize');
 
 const Seats = sequelize.define('seats', {
-    id: {
-        type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4, // Or DataTypes.UUIDV1
-        primaryKey: true,
-        allowNull: false
-    },
     seat_no: {
         type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true,
+    },
+    id: {
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
         allowNull: false,
-        autoIncrement: true
+        primaryKey: false,
     }
 })
 
-Seats.belongsTo(require('./class_details'))
-Seats.hasOne(require('./ticket'))
+
 module.exports = Seats;
