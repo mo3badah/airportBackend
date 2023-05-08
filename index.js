@@ -13,6 +13,8 @@ import helmet from "helmet";
 import innovationsRouter from "../routes/Innovations" // all the routed innovations add, update, delete, and fetching all the data of it
 import userRouter from "../routes/Users" // files needed to make new profile ( registration methods )
 import authRouter from "../routes/Auth"
+import airportRouter from "../routes/Airport"
+import airlineRouter from "../routes/Airline"
 
 
 // firstly we start using our libraries which we needed and add them to our app
@@ -208,6 +210,9 @@ app.use(express.static("front"))
 app.use(`/api/innovations`,innovationsRouter)
 app.use(`/api/user`,userRouter)
 app.use(`/api/login`,authRouter)
+// use routers for airlines and airports
+app.use('/api/airport', airportRouter);
+app.use('/api/airline', airlineRouter);
 
 // this is the first step of initializing the server while we make the application is listening to specific port
 app.listen(port, () => console.log(`Server is listening to port: ${port}`));

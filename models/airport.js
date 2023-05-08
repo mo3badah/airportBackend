@@ -11,8 +11,9 @@ const Airport = sequelize.define('airport', {
         allowNull: false
     },
     AP_name: {
-        type: DataTypes.STRING(20),
-        allowNull: true
+        type: DataTypes.STRING(40),
+        allowNull: true,
+        unique: true
     },
     AP_city: {
         type: DataTypes.STRING(20),

@@ -17,51 +17,51 @@ const Client = sequelize.define('client', {
         allowNull: false
     },
     password: {
-        type: Sequelize.STRING(100),
+        type: DataTypes.STRING(100),
         allowNull: true
     },
     email: {
-        type: Sequelize.STRING(45),
+        type: DataTypes.STRING(45),
         allowNull: true
     },
     birth: {
-        type: Sequelize.STRING(20),
+        type: DataTypes.STRING(20),
         allowNull: true
     },
     Fname: {
-        type: Sequelize.STRING(45),
+        type: DataTypes.STRING(45),
         allowNull: true
     },
     Mname: {
-        type: Sequelize.STRING(45),
+        type: DataTypes.STRING(45),
         allowNull: true
     },
     Lname: {
-        type: Sequelize.STRING(45),
+        type: DataTypes.STRING(45),
         allowNull: true
     },
     country: {
-        type: Sequelize.STRING(45),
+        type: DataTypes.STRING(45),
         allowNull: true
     },
     state: {
-        type: Sequelize.STRING(45),
+        type: DataTypes.STRING(45),
         allowNull: true
     },
     street:{
-        type : Sequelize.STRING(45),
+        type : DataTypes.STRING(45),
         allowNull : true
     },
     birth:{
-        type : Sequelize.DATE,
+        type : DataTypes.DATEONLY,
         allowNull : true
     },
     gender:{
-        type : Sequelize.STRING(45),
+        type : DataTypes.STRING(45),
         allowNull : true
     },
     fullName: {
-        type: Sequelize.VIRTUAL,
+        type: DataTypes.VIRTUAL,
         get() {
             return `${this.Fname} ${this.Mname} ${this.Lname}`;
         },
@@ -71,7 +71,7 @@ const Client = sequelize.define('client', {
     },
     age: {
         // this function to get the age from the birthdate without further calculations for every time
-        type: Sequelize.VIRTUAL,
+        type: DataTypes.VIRTUAL,
         get() {
             let today = new Date();
             let birthDate = new Date(this.birth);
@@ -85,7 +85,7 @@ const Client = sequelize.define('client', {
     },
     // set full address data from the street and state and country
     fullAddress: {
-        type: Sequelize.VIRTUAL,
+        type: DataTypes.VIRTUAL,
         get() {
             return `${this.street}, ${this.state}, ${this.country}`;
         },

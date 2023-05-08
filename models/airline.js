@@ -10,12 +10,13 @@ const Airline = sequelize.define('airline', {
         allowNull: false
     },
     AL_name: {
-        type: DataTypes.STRING(20),
+        type: DataTypes.STRING(40),
         allowNull: true,
     },
     AL_three_letter_code: {
-        type: DataTypes.STRING(3),
+        type: DataTypes.NUMBER(3),
         allowNull: true,
+        unique: true
     },
     AL_phone: {
         type: DataTypes.STRING(20),
