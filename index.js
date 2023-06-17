@@ -15,6 +15,7 @@ import userRouter from "../routes/Users" // files needed to make new profile ( r
 import authRouter from "../routes/Auth"
 import airportRouter from "../routes/Airport"
 import airlineRouter from "../routes/Airline"
+import flightRouter from "../routes/Flight"
 
 
 // firstly we start using our libraries which we needed and add them to our app
@@ -213,6 +214,8 @@ app.use(`/api/login`,authRouter)
 // use routers for airlines and airports
 app.use('/api/airport', airportRouter);
 app.use('/api/airline', airlineRouter);
+// use routers for flights and bookings
+app.use('/api/flight', flightRouter);
 
 // this is the first step of initializing the server while we make the application is listening to specific port
 app.listen(port, () => console.log(`Server is listening to port: ${port}`));

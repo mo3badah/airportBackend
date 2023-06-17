@@ -12,14 +12,14 @@ let postNewAirports = async (req, res, nxt) => {
                 notCompatibleAirports.push(airport);
             }
         }
-        // if there is not compatible airports return 400
+        // if there aren't compatible airports return 400
         if (notCompatibleAirports.length > 0) {
             return res.status(400).send(notCompatibleAirports);
         }
         nxt()
     } catch (e) {
         console.log(e);
-        res.status(400).send('Bad Request...');
+        res.status(400).send('not compatible airports data...');
     }
 };
 

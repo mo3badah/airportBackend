@@ -34,7 +34,7 @@ const ClassDetails = sequelize.define('class_details', {
 ClassDetails.hasMany(Seats);
 Seats.belongsTo(ClassDetails);
 
-Flight.belongsToMany(ClassDetails, { through: 'flight_class_details' });
-ClassDetails.belongsToMany(Flight, { through: 'flight_class_details' });
+Flight.hasMany(ClassDetails);
+ClassDetails.belongsTo(Flight);
 
 module.exports = ClassDetails;

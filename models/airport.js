@@ -34,18 +34,19 @@ const Airport = sequelize.define('airport', {
 }, {
     timestamps: false
 });
-const FlightAirport = sequelize.define('flightAirport',{},{
+// make flightairport table which have flightNumber and airportCodeFrom and airportCodeTo as foreign key
+const FlightAirports = sequelize.define('flightAirports',{
+    airportTo: DataTypes.UUID,
+},{
     timestamps: false
 });
 // Define associations
-Flight.belongsToMany(Airport, { through: FlightAirport, as: 'departureAirports', foreignKey: 'flightNumber', otherKey: 'airportCodeFrom' });
-Flight.belongsToMany(Airport, { through: FlightAirport, as: 'arrivalAirports', foreignKey: 'flightNumber', otherKey: 'airportCodeTo' });
+Flight.belongsToMany(Airport, { through: FlightAirports, foreignKey: 'flightId' });
+Airport.belongsToMany(Flight, { through: FlightAirports, foreignKey: 'airportFrom' });
 
-Airport.belongsToMany(Flight, { through: FlightAirport, as: 'departureFlights', foreignKey: 'airportCodeFrom', otherKey: 'flightNumber' });
-Airport.belongsToMany(Flight, { through: FlightAirport, as: 'arrivalFlights', foreignKey: 'airportCodeTo', otherKey: 'flightNumber' });
 
 Airport.belongsToMany(Airline, {through: 'airport_line'})
 Airline.belongsToMany(Airport, {through: 'airport_line'})
 
 
-module.exports = Airport;
+module.exports = Airport

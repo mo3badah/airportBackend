@@ -3,8 +3,7 @@ const sequelize = require('./sequelize');
 
 const Seats = sequelize.define('seats', {
     seat_no: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
+        type: DataTypes.STRING(3),
         primaryKey: true,
     },
     id: {

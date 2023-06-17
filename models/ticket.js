@@ -36,5 +36,4 @@ Ticket.belongsTo(ClassDetails);
 Ticket.hasOne(Seats);
 Seats.belongsTo(Ticket);
 
-
 module.exports = Ticket

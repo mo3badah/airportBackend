@@ -14,7 +14,7 @@ const Airline = sequelize.define('airline', {
         allowNull: true,
     },
     AL_three_letter_code: {
-        type: DataTypes.NUMBER(3),
+        type: DataTypes.INTEGER(3),
         allowNull: true,
         unique: true
     },

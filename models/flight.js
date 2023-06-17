@@ -1,12 +1,19 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('./sequelize');
+const Stops = require('./stops');
+const Type = require('./type');
 
 const Flight = sequelize.define('flight', {
-    flight_no: {
+    id: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4, // Or DataTypes.UUIDV1
         primaryKey: true,
         allowNull: false
+    },
+    flight_number: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
     },
     take_off_time: {
         type: DataTypes.TIME,
@@ -16,14 +23,6 @@ const Flight = sequelize.define('flight', {
         type: DataTypes.DATEONLY,
         allowNull: true
     },
-    city_from: {
-        type: DataTypes.STRING(20),
-        allowNull: true
-    },
-    city_to: {
-        type: DataTypes.STRING(20),
-        allowNull: true
-    },
     status: {
         type: DataTypes.STRING(20),
         allowNull: true
@@ -31,8 +30,17 @@ const Flight = sequelize.define('flight', {
     duration: {
         type: DataTypes.TIME,
         allowNull: true
+    },
+    no_of_stops:{
+        type: DataTypes.INTEGER,
+        allowNull: true
     }
 });
 
+Flight.hasMany(Stops);
+Stops.belongsTo(Flight);
+
+Type.hasMany(Flight);
+Flight.belongsTo(Type);
 
 module.exports = Flight
