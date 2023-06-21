@@ -8,6 +8,7 @@ const Airline = require("../models/airline");
 const Stops = require("../models/stops");
 const Types = require("../models/type");
 const ClassDetails = require("../models/class_details");
+const Seats = require("../models/seats");
 // let flight_number = require("../util/flightNameGen");
 
 async function createNewFlight(flight) {
@@ -18,13 +19,6 @@ async function createNewFlight(flight) {
   // create flight stops
   let stops = flight.stops;
   let noOfStops = stops.length;
-  // get the type of the flight
-  let type = await Types.findOne({
-      where: { type: flight.type },
-  });
-  if (!type) {
-    type = {"no_of_economical_seats": 24, "no_of_business_seats": 144}
-  }
   // get class details
   let class_details = flight.class_details;
   let newFlight = await Flight.create({
@@ -35,23 +29,63 @@ async function createNewFlight(flight) {
       duration: flight.duration,
       no_of_stops: noOfStops,
     });
+  // get the type of the flight
+  let type = await Types.findOne({
+    where: { flight_type: flight.type },
+  });
+  if (!type) {
+    type = {no_of_economical_seats: 24, no_of_business_seats: 144}
+  }else {
+    type.addFlight(newFlight);
+  }
   if (noOfStops > 0) {
-    stops.forEach(stop => async () =>{
+    stops.forEach( async (stop)=> {
+      let airport = await Airport.findOne({
+        where: { AP_name: stop.airport_name },
+      });
       let newStop = await Stops.create({
-        flight_id: newFlight.id,
         date: stop.date,
         time: stop.time,
-        airport_id: stop.airport_id,
+        airport_id: airport.AP_id,
         duration: stop.duration,
       });
+        newFlight.addStops(newStop);
     });
   }
+  // create seats
+  let no_of_economical_seats = type.no_of_economical_seats;
+  let no_of_business_seats = type.no_of_business_seats;
+  let businessSeats = generateBusinessSeats(no_of_business_seats);
+  let economiSeats = generateEconomiSeats(no_of_economical_seats);
   // create classes
-  let newClassesEco = await ClassDetails.create({
-    flightId: newFlight.id,
-    class: class_details[0].class,
-
-  })
+  if (class_details.length > 0) {
+    class_details.forEach(async (class_detail) =>{
+      let newClasses = await ClassDetails.create({
+        class: class_detail.class,
+        price: class_detail.price,
+        weight_limit: class_detail.weight_limit,
+        extra_luggage_price: class_detail.extra_luggage_price,
+      });
+      newFlight.addClass_details(newClasses);
+      console.log(businessSeats)
+      console.log(economiSeats)
+      if (class_detail.class === "business") {
+        businessSeats.forEach( async (seat) =>{
+          let newSeat = await Seats.create({
+            seat_no: seat
+            });
+          newClasses.addSeats(newSeat);
+          });
+      }else {
+        economiSeats.forEach( async (seat) =>{
+          let newSeat = await Seats.create({
+            seat_no: seat
+          });
+          newClasses.addSeats(newSeat);
+        });
+      }
+    });
+  }
   // get all the airports from the request
     let airportFrom = await Airport.findOne({
       where: { AP_name: flight.airportFrom },
@@ -212,6 +246,63 @@ let deleteClient = async (req, res) => {
       .send(`user with email ${req.params.email} is not found to be deleted`);
   }
 };
+// generate business seats
+function generateBusinessSeats(numSeats) {
+  const seatLetters = ['A', 'B', 'C', 'D']; // Letters representing seat rows
+  const seatsPerRow = Math.ceil(numSeats / seatLetters.length); // Number of seats per row
+
+  let seats = [];
+  let currentIndex = 1;
+
+  for (let i = 0; i < numSeats; i++) {
+    const letterIndex = i % seatLetters.length;
+    const row = currentIndex + seatLetters[letterIndex] ;
+
+    if (seats.includes(row)) {
+      currentIndex++; // If the seat is already assigned, increment the index to the next row
+      i--; // Decrement i to repeat the current iteration with the updated index
+      continue;
+    }
+
+    seats.push(row);
+
+    // Increment the index for every seatsPerRow iterations
+    if ((i + 1) % seatsPerRow === 0) {
+      currentIndex++;
+    }
+  }
+
+  return seats;
+}
+
+function generateEconomiSeats(numSeats) {
+  const seatLetters = ['A', 'B', 'C', 'D', 'E', 'F']; // Letters representing seat rows
+  const seatsPerRow = Math.ceil(numSeats / seatLetters.length); // Number of seats per row
+
+  let seats = [];
+  let currentIndex = 1;
+
+  for (let i = 0; i < numSeats; i++) {
+    const letterIndex = i % seatLetters.length;
+    const row =currentIndex + seatLetters[letterIndex] ;
+
+    if (seats.includes(row)) {
+      currentIndex++; // If the seat is already assigned, increment the index to the next row
+      i--; // Decrement i to repeat the current iteration with the updated index
+      continue;
+    }
+
+    seats.push(row);
+
+    // Increment the index for every seatsPerRow iterations
+    if ((i + 1) % seatsPerRow === 0) {
+      currentIndex++;
+    }
+  }
+
+  return seats;
+}
+
 module.exports = {
   postNewFlight,
   postNewFlights,

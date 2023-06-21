@@ -44,7 +44,7 @@ const schema = {
                     "time": {
                         "type": "string",
                     },
-                    "airport_id": {
+                    "airport_name": {
                         "type": "string",
                     },
                     "duration": {

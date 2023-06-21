@@ -18,10 +18,6 @@ const Payment = sequelize.define('payment', {
     card_cvv: {
         type: DataTypes.STRING(3),
         allowNull: true
-    },
-    card_pin: {
-        type: DataTypes.STRING(4),
-        allowNull: true
     }
 },{timestamps: false});
 

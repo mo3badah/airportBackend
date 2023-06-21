@@ -5,6 +5,6 @@ module.exports = (req,res,nxt)=>{
     if (valid){
         nxt()
     }else {
-        res.status(403).send("Please enter valid data")
+        res.status(403).send("Please enter valid flight data data")
     }
 }
