@@ -6,6 +6,10 @@ const Type = sequelize.define('type', {
         allowNull: false,
         primaryKey: true,
     },
+    no_of_first_class_seats: {
+        type: DataTypes.INTEGER,
+        allowNull: true
+    },
     no_of_economical_seats: {
         type: DataTypes.INTEGER,
         allowNull: true

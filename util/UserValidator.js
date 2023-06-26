@@ -1,15 +1,5 @@
 const Ajv = require("ajv").default;
 const ajv = new Ajv();
-// making schema
-// ajv.addKeyword('isDate', {
-//   validate: function (schema, data) {
-//     if (!data) {
-//       return true; // Empty value is considered valid
-//     }
-//     // Check if the value is a valid date
-//     return !isNaN(Date.parse(data));
-//   },
-// });
 const schema = {
   type: "object",
   properties: {

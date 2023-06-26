@@ -6,5 +6,6 @@ const validatorsMW = require("../middlewares/AirportsValidatorMW")
 // login authentication
 router.post("/",validatorMW, airport.postNewAirport)
 router.post("/bulk",validatorsMW, airport.postNewAirports)
+router.get("/", airport.getAllAirports)
 
 module.exports = router

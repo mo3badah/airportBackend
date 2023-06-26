@@ -2,6 +2,7 @@
 const sequelize = require("sequelize");
 const Airport = require("../models/airport");
 const Airline = require("../models/airline");
+const {Types} = require("mongoose");
 
 let postNewAirline = async (req, res) => {
   // check if user founded or not
@@ -110,59 +111,19 @@ let postNewAirports = async (req, res) => {
 };
 
 
-let getAllClients = async (req, res) => {
+let getAllAirports = async (req, res) => {
   try {
-    let users = await Client.findAll({
-      include: ClientPhone,
-    });
-    if (!users) return res.status(404).send("Clients data are not found...");
-    res.send(users);
+    let airports = await Airport.findAll({ attributes: { exclude: ["createdAt", "updatedAt"] } });
+    if (!airports) return res.status(404).send("Airports data are not found...");
+    res.send(airports);
   } catch (e) {
     for (let err in e.errors) {
       console.log(e.errors[err].message);
     }
-    res.status(404).send("Clients data are not found...");
+    res.status(404).send("Airports data are not found...");
   }
 };
-let addNewClientFromAdmin = async (req, res) => {
-  // check if user founded or not
-  try {
-    let user = await Client.findOne({ where: { email: req.body.email } });
-    if (user)
-      return res
-        .status(400)
-        .send(`user with this email: ${req.body.email} is already exist`);
-    let salt = await bcrypt.genSalt(10);
-    let hashPswd = await bcrypt.hash(req.body.password, salt);
-    let newClient = await Client.create({
-      Fname: req.body.Fname,
-      Mname: req.body.Mname,
-      Lname: req.body.Lname,
-      email: req.body.email,
-      password: hashPswd,
-      country: req.body.country,
-      state: req.body.state,
-      street: req.body.street,
-      gender: req.body.gender,
-      birth: req.body.birth,
-    });
-    let newClientPhone = await ClientPhone.create({
-      phone: +req.body.phone,
-    });
-    let newClientPassport = await ClientPassport.create({
-      passport: req.body.passport,
-    });
-    await newClientPhone.setClient(newClient);
-    await newClientPassport.setClient(newClient);
-    // send response
-    res.status(200).send(newClient.fullName + " is added successfully");
-  } catch (e) {
-    for (let err of e.errors) {
-      console.log(e.errors[err].message);
-    }
-    res.status(400).send(`Can't Add user try again later...`);
-  }
-};
+
 // update users
 let updateToAdminClient = async (req, res) => {
   try {
@@ -236,5 +197,6 @@ module.exports = {
   postNewAirline,
   postNewAirport,
   postNewAirports,
-  postNewAirlines
+  postNewAirlines,
+  getAllAirports,
 };

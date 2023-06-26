@@ -104,17 +104,53 @@ let addNewClientFromAdmin = async (req, res) => {
   }
 };
 // update users
-let updateToAdminClient = async (req, res) => {
+let editNewClient = async (req, res) => {
   try {
-    let updClient = await Client.updateOne(
-      { email: req.body.email },
-      {
-        $set: {
-          flag: true,
+    let salt = await bcrypt.genSalt(10);
+    let hashPswd = await bcrypt.hash(req.body.password, salt);
+    let updClient = await Client.update(
+        {
+          Fname: req.body.Fname,
+          Mname: req.body.Mname,
+          Lname: req.body.Lname,
+          email: req.body.email,
+          password: hashPswd,
+          country: req.body.country,
+          state: req.body.state,
+          street: req.body.street,
+          birth: req.body.birth,
+          gender: req.body.gender
         },
-      },
-      { returnOriginal: false }
+        { where: { id: req.body.id } }
     );
+    console.log(updClient)
+    if (req.body.phone){
+      let updPhone = await ClientPhone.update(
+          {
+            phone: +req.body.phone,
+          },
+          { where: { clientId: req.body.id } }
+      );
+      console.log(updPhone)
+      if (updPhone[0] === 0) await ClientPhone.create({
+        phone: +req.body.phone,
+        clientId: req.body.id
+      });
+    }
+    if (req.body.passport){
+      let updPassport = await ClientPassport.update(
+          {
+            passport: req.body.passport,
+          },
+          { where: { clientId: req.body.id } }
+      );
+        console.log(updPassport)
+        if (updPassport[0] === 0) await ClientPassport.create({
+            passport: req.body.passport,
+            clientId: req.body.id
+        }
+        );
+    }
     if (!updClient)
       return res
         .status(404)
@@ -176,7 +212,7 @@ module.exports = {
   postNewClient,
   getAllClients,
   addNewClientFromAdmin,
-  updateToAdminClient,
+  editNewClient,
   updateToClient,
   deleteClient,
 };

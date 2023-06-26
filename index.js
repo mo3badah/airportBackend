@@ -17,6 +17,7 @@ import airportRouter from "../routes/Airport"
 import airlineRouter from "../routes/Airline"
 import flightRouter from "../routes/Flight"
 import paymentRouter from "../routes/Payment"
+import employeeRouter from "../routes/Employee"
 
 
 // firstly we start using our libraries which we needed and add them to our app
@@ -219,6 +220,8 @@ app.use('/api/airline', airlineRouter);
 app.use('/api/flight', flightRouter);
 // use routes for Payments
 app.use('/api/payment', paymentRouter);
+// user routes for Admins and Employees
+app.use('/api/employee', employeeRouter);
 
 // this is the first step of initializing the server while we make the application is listening to specific port
 app.listen(port, () => console.log(`Server is listening to port: ${port}`));
